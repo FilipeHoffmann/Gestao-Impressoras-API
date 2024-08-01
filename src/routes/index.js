@@ -4,7 +4,7 @@ const router = express.Router();
 const msg = {
     title: '🖨️ Gestao Impressoras API',
     description: 'API para a conexão com o banco de dados.',
-    routes: [
+    routesContratos: [
         '/contratos',
         '/produtos',
         '/secretarias',
@@ -13,6 +13,11 @@ const msg = {
         '/itens',
         '/aditivosExcendentes',
         '/aditivosItens'
+    ],
+    routesImpressoras: [
+        '/impressoras',
+        '/contadores',
+        '/instalacoes'
     ]
 };
 
@@ -20,14 +25,18 @@ router.get('/', (req, res) => {
     res.json(msg);
 });
 
-const aditivosRouter = require('./aditivos');
-const aditivosExcendentesRouter = require('./aditivosExcedentes');
-const aditivosItensRouter = require('./aditivosItens');
-const contratosRouter = require('./contratos');
-const excedentesRouter = require('./excedentes');
-const itensRouter = require('./itens');
-const produtosRouter = require('./produtos');
-const secretariasRouter = require('./secretarias');
+const aditivosRouter = require('./contratos/aditivos');
+const aditivosExcendentesRouter = require('./contratos/aditivosExcedentes');
+const aditivosItensRouter = require('./contratos/aditivosItens');
+const contratosRouter = require('./contratos/contratos');
+const excedentesRouter = require('./contratos/excedentes');
+const itensRouter = require('./contratos/itens');
+const produtosRouter = require('./contratos/produtos');
+const secretariasRouter = require('./contratos/secretarias');
+
+const impressorasRouter = require('./impressoras/impressoras');
+const instalacoesRouter = require('./impressoras/instalacoes');
+const contadoresRouter = require('./impressoras/contadores');
 
 router.use('/aditivos', aditivosRouter);
 router.use('/aditivosExcendentes', aditivosExcendentesRouter);
@@ -37,5 +46,10 @@ router.use('/excedentes', excedentesRouter);
 router.use('/itensRouter', itensRouter);
 router.use('/produtos', produtosRouter);
 router.use('/secretarias', secretariasRouter);
+
+router.use('/contadores',contadoresRouter);
+router.use('/instalacoes',instalacoesRouter);
+router.use('/impressoras',impressorasRouter);
+
 
 module.exports = router;
