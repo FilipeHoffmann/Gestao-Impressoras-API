@@ -18,7 +18,21 @@ const msg = {
         '/impressoras',
         '/contadores',
         '/instalacoes'
-    ]
+    ],
+    routesFaturamentos: [
+        '/empenhos',
+        '/empenhoExcedentes',
+        '/empenhoFaturamentos',
+        '/empenhosItens',
+        '/faturamentos',
+        '/faturamentoExcedentes',
+        '/faturamentoItens'
+    ],
+    developedBy: {
+        name: 'Filipe Antonio Hoffmann Nishiguchi',
+        linkedin: 'https://www.linkedin.com/in/filipe-antonio-hoffmann-nishiguchi/',
+        github: 'https://github.com/FilipeHoffmann'
+    }
 };
 
 router.get('/', (req, res) => {
@@ -38,6 +52,14 @@ const impressorasRouter = require('./impressoras/impressoras');
 const instalacoesRouter = require('./impressoras/instalacoes');
 const contadoresRouter = require('./impressoras/contadores');
 
+const empenhosRouter = require('./faturamentos/empenhos');
+const empenhoExcedentesRouter = require('./faturamentos/empenhoExcedentes');
+const empenhoFaturamentosRouter = require('./faturamentos/empenhoFaturamentos');
+const empenhoItensRouter = require('./faturamentos/empenhoItens');
+const faturamentosRouter = require('./faturamentos/faturamentos');
+const faturamentoExcedentesRouter = require('./faturamentos/faturamentoExcedentes');
+const faturamentoItensRouter = require('./faturamentos/faturamentoItens');
+
 router.use('/aditivos', aditivosRouter);
 router.use('/aditivosExcendentes', aditivosExcendentesRouter);
 router.use('/aditivosItens', aditivosItensRouter);
@@ -51,5 +73,12 @@ router.use('/contadores',contadoresRouter);
 router.use('/instalacoes',instalacoesRouter);
 router.use('/impressoras',impressorasRouter);
 
+router.use('/empenhos', empenhosRouter);
+router.use('/empenhoExcedentes', empenhoExcedentesRouter);
+router.use('/empenhoFaturamentos', empenhoFaturamentosRouter);
+router.use('/empenhosItens', empenhoItensRouter);
+router.use('/faturamentos', faturamentosRouter);
+router.use('/faturamentoExcedentes', faturamentoExcedentesRouter);
+router.use('/faturamentoItens', faturamentoItensRouter);
 
 module.exports = router;
