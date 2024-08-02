@@ -11,14 +11,39 @@ Para utilizar a API Gestao, você pode enviar solicitações HTTP para os endpoi
 ## Estrutura do Diretório do Projeto
 ```
 .
+├── model
+│   ├── modelDB.mwb
+│   └── modelDB.mwb.bak
+├── node_modules
 ├── src
 │   ├── routes
-│   │   ├── contratos.js
-│   │   └── ...
+│   │   ├── contratos
+│   │   │   ├── aditivos.js
+│   │   │   ├── aditivosExcedentes.js
+│   │   │   ├── aditivosItens.js
+│   │   │   ├── contratos.js
+│   │   │   ├── excedentes.js
+│   │   │   ├── itens.js
+│   │   │   ├── produtos.js
+│   │   │   └── secretarias.js
+│   │   ├── faturamentos
+│   │   │   ├── empenhoExcedentes.js
+│   │   │   ├── empenhoFaturamentos.js
+│   │   │   ├── empenhoItens.js
+│   │   │   ├── empenhos.js
+│   │   │   ├── faturamentoExcedentes.js
+│   │   │   ├── faturamentoItens.js
+│   │   │   └── faturamentos.js
+│   │   ├── impressoras
+│   │   │   ├── contadores.js
+│   │   │   ├── impressoras.js
+│   │   │   └── instalacoes.js
+│   │   └── index.js
 │   ├── app.js
 │   └── database.js
 ├── .env
 ├── package-lock.json
-└── package.json
+├── package.json
+└── README.md
 ```
 
