@@ -23,7 +23,7 @@ const msg = {
         '/empenhos',
         '/empenhoExcedentes',
         '/empenhoFaturamentos',
-        '/empenhosItens',
+        '/empenhoItens',
         '/faturamentos',
         '/faturamentoExcedentes',
         '/faturamentoItens'
@@ -76,7 +76,7 @@ router.use('/impressoras',impressorasRouter);
 router.use('/empenhos', empenhosRouter);
 router.use('/empenhoExcedentes', empenhoExcedentesRouter);
 router.use('/empenhoFaturamentos', empenhoFaturamentosRouter);
-router.use('/empenhosItens', empenhoItensRouter);
+router.use('/empenhoItens', empenhoItensRouter);
 router.use('/faturamentos', faturamentosRouter);
 router.use('/faturamentoExcedentes', faturamentoExcedentesRouter);
 router.use('/faturamentoItens', faturamentoItensRouter);
