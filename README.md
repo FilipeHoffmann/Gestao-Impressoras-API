@@ -4,9 +4,18 @@
 
 API para gestão de impressoras, controle de contratos e aditivos, foi desenvolvida para atender a demanda de gerenciamento dos equipamentos e seus respectivos consumos.
 
+## Requisitos
+
+* Estar conectado ao banco de dados mySQL seguindo o modelo presente na pasta ```model``` que está no diretório. Recomenda-se usar a ferramenta MySQL Workbanch para gerar o banco de dados. Após estar com o banco de dados criado altere o arquivo ```.env``` para conter as informações de conexão com o banco recém criado. 
+
+* Instalar as dependências do Node.js, sendo elas:
+    * express
+    * mysql2
+    * dotenv
+
 ## Como Usar
 
-Para utilizar a API Gestao, você pode enviar solicitações HTTP para os endpoints fornecidos, conforme descrito abaixo. Os parâmetros necessários variam de acordo com o endpoint específico, conforme documentado.
+Para utilizar a API Gestão de Impressoras, você pode enviar solicitações HTTP para os endpoints descritos no arquivo ```.\src\routes\index.js```. Os parâmetros necessários variam de acordo com o endpoint específico, mas todos eles aceitam requisições como: GET; POST; PUT; DELETE.
 
 ## Estrutura do Diretório do Projeto
 ```
