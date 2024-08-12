@@ -6,7 +6,7 @@ const db = new Database();
 router.get('/', async (req, res) => {
     try {
         const connection = await db.getConnection();
-        const [rows] = await connection.execute("SELECT `contratos`.`idContrato`, DATE_FORMAT(`contratos`.`dataInicial`, '%Y-%m-%d') AS `dataInicial`, DATE_FORMAT(`contratos`.`dataFinal`, '%Y-%m-%d') AS `dataFinal`, DATE_FORMAT(`contratos`.`dataFinalAtual`, '%Y-%m-%d') AS `dataFinalAtual` FROM `gestaoimpressoras`.`contratos`;");
+        const [rows] = await connection.execute("SELECT `contratos`.`idContrato`, DATE_FORMAT(`contratos`.`dataInicial`, '%d-%m-%y') AS `dataInicial`, DATE_FORMAT(`contratos`.`dataFinal`, '%d-%m-%y') AS `dataFinal`, DATE_FORMAT(`contratos`.`dataFinalAtual`, '%d-%m-%y') AS `dataFinalAtual` FROM `gestaoimpressoras`.`contratos`;");
         res.json(rows);
     } catch (error) {
         console.error('Error fetching contratos:', error.message);
