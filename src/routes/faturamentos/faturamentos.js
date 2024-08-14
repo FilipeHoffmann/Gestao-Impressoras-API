@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM faturamentos');
+        const [rows] = await db.query('SELECT * FROM faturamentos');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching faturamentos:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idFaturamento, competencia, dataInicial, dataFinal, situacao } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO faturamentos (idFaturamento, competencia, dataInicial, dataFinal, situacao) VALUES (?, ?, ?, ?, ?)',
             [idFaturamento, competencia, dataInicial, dataFinal, situacao]
         );
@@ -35,8 +33,7 @@ router.put('/:idFaturamento', async (req, res) => {
     const { competencia, dataInicial, dataFinal, situacao } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE faturamentos SET competencia = ?, dataInicial = ?, dataFinal = ?, situacao = ? WHERE idFaturamento = ?',
             [competencia, dataInicial, dataFinal, situacao, idFaturamento]
         );
@@ -56,8 +53,7 @@ router.delete('/:idFaturamento', async (req, res) => {
     const { idFaturamento } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM faturamentos WHERE idFaturamento = ?',
             [idFaturamento]
         );

@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM produtos');
+        const [rows] = await db.query('SELECT * FROM produtos');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching produtos:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idProduto, descricao, franquiaPB, franquiaColor, tipo, copiaLocacao, color } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO produtos (idProduto, descricao, franquiaPB, franquiaColor, tipo, copiaLocacao, color) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [idProduto, descricao, franquiaPB, franquiaColor, tipo, copiaLocacao, color]
         );
@@ -35,8 +33,7 @@ router.put('/:idProduto', async (req, res) => {
     const { descricao, franquiaPB, franquiaColor, tipo, copiaLocacao, color } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE produtos SET descricao = ?, franquiaPB = ?, franquiaColor = ?, tipo = ?, copiaLocacao = ?, color = ? WHERE idProduto = ?',
             [descricao, franquiaPB, franquiaColor, tipo, copiaLocacao, color, idProduto]
         );
@@ -56,8 +53,7 @@ router.delete('/:idProduto', async (req, res) => {
     const { idProduto } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM produtos WHERE idProduto = ?',
             [idProduto]
         );

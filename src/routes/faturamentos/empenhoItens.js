@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM empenhoitens');
+        const [rows] = await db.query('SELECT * FROM empenhoitens');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching empenhoitens:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idEmpenhoItem, quantidade, saldo, valor, idEmpenho, idItem, idEmpenhoExcedente } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO empenhoitens (idEmpenhoItem, quantidade, saldo, valor, idEmpenho, idItem, idEmpenhoExcedente) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [idEmpenhoItem, quantidade, saldo, valor, idEmpenho, idItem, idEmpenhoExcedente]
         );
@@ -35,8 +33,7 @@ router.put('/:idEmpenhoItem', async (req, res) => {
     const { quantidade, saldo, valor, idEmpenho, idItem, idEmpenhoExcedente } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE empenhoitens SET quantidade = ?, saldo = ?, valor = ?, idEmpenho = ?, idItem = ?, idEmpenhoExcedente = ? WHERE idEmpenhoItem = ?',
             [quantidade, saldo, valor, idEmpenho, idItem, idEmpenhoExcedente, idEmpenhoItem]
         );
@@ -56,8 +53,7 @@ router.delete('/:idEmpenhoItem', async (req, res) => {
     const { idEmpenhoItem } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM empenhoitens WHERE idEmpenhoItem = ?',
             [idEmpenhoItem]
         );

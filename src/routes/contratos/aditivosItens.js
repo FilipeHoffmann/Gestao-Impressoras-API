@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM aditivositens');
+        const [rows] = await db.query('SELECT * FROM aditivositens');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching aditivositens:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idAditivoItem, descricao, quantidade, valor, idItem, idAditivo } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO aditivositens (idAditivoItem, descricao, quantidade, valor, idItem, idAditivo) VALUES (?, ?, ?, ?, ?, ?)',
             [idAditivoItem, descricao, quantidade, valor, idItem, idAditivo]
         );
@@ -35,8 +33,7 @@ router.put('/:idAditivoItem', async (req, res) => {
     const { descricao, quantidade, valor, idItem, idAditivo } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE aditivositens SET descricao = ?, quantidade = ?, valor = ?, idItem = ?, idAditivo = ? WHERE idAditivoItem = ?',
             [descricao, quantidade, valor, idItem, idAditivo, idAditivoItem]
         );
@@ -56,8 +53,7 @@ router.delete('/:idAditivoItem', async (req, res) => {
     const { idAditivoItem } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM aditivositens WHERE idAditivoItem = ?',
             [idAditivoItem]
         );

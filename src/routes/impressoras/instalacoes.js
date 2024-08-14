@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM instalacoes');
+        const [rows] = await db.query('SELECT * FROM instalacoes');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching instalacoes:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idInstalacao, localInstalacao, endereco, transformador, responsavel, ip, dataInstalacao, contInstalacao, dataRetirada, contRetirada, idItem, idImpressora } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO instalacoes (idInstalacao, localInstalacao, endereco, transformador, responsavel, ip, dataInstalacao, contInstalacao, dataRetirada, contRetirada, idItem, idImpressora) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
             [idInstalacao, localInstalacao, endereco, transformador, responsavel, ip, dataInstalacao, contInstalacao, dataRetirada, contRetirada, idItem, idImpressora]
         );
@@ -35,8 +33,7 @@ router.put('/:idInstalacao', async (req, res) => {
     const { localInstalacao, endereco, transformador, responsavel, ip, dataInstalacao, contInstalacao, dataRetirada, contRetirada, idItem, idImpressora } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE instalacoes SET localInstalacao = ?, endereco = ?, transformador = ?, responsavel = ?, ip = ?, dataInstalacao = ?, contInstalacao = ?, dataRetirada = ?, contRetirada = ?, idItem = ?, idImpressora = ? WHERE idInstalacao = ?',
             [localInstalacao, endereco, transformador, responsavel, ip, dataInstalacao, contInstalacao, dataRetirada, contRetirada, idItem, idImpressora, idInstalacao]
         );
@@ -56,8 +53,7 @@ router.delete('/:idInstalacao', async (req, res) => {
     const { idInstalacao } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM instalacoes WHERE idInstalacao = ?',
             [idInstalacao]
         );

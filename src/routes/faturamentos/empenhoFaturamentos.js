@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM empenhofaturamentos');
+        const [rows] = await db.query('SELECT * FROM empenhofaturamentos');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching empenhofaturamentos:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idEmpenhoFaturamentos, idEmpenho, idFaturamento } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO empenhofaturamentos (idEmpenhoFaturamentos, idEmpenho, idFaturamento) VALUES (?, ?, ?)',
             [idEmpenhoFaturamentos, idEmpenho, idFaturamento]
         );
@@ -35,8 +33,7 @@ router.put('/:idEmpenhoFaturamentos', async (req, res) => {
     const { idEmpenho, idFaturamento } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE empenhofaturamentos SET idEmpenho = ?, idFaturamento = ? WHERE idEmpenhoFaturamentos = ?',
             [idEmpenho, idFaturamento, idEmpenhoFaturamentos]
         );
@@ -56,8 +53,7 @@ router.delete('/:idEmpenhoFaturamentos', async (req, res) => {
     const { idEmpenhoFaturamentos } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM empenhofaturamentos WHERE idEmpenhoFaturamentos = ?',
             [idEmpenhoFaturamentos]
         );

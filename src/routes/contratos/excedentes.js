@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM excedentes');
+        const [rows] = await db.query('SELECT * FROM excedentes');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching excedentes:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idExcedente, quantidade, saldo, valorAtual, idProduto } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO excedentes (idExcedente, quantidade, saldo, valorAtual, idProduto) VALUES (?, ?, ?, ?, ?)',
             [idExcedente, quantidade, saldo, valorAtual, idProduto]
         );
@@ -35,8 +33,7 @@ router.put('/:idExcedente', async (req, res) => {
     const { quantidade, saldo, valorAtual, idProduto } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE excedentes SET quantidade = ?, saldo = ?, valorAtual = ?, idProduto = ? WHERE idExcedente = ?',
             [quantidade, saldo, valorAtual, idProduto, idExcedente]
         );
@@ -56,8 +53,7 @@ router.delete('/:idExcedente', async (req, res) => {
     const { idExcedente } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM excedentes WHERE idExcedente = ?',
             [idExcedente]
         );

@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM aditivosexcedentes');
+        const [rows] = await db.query('SELECT * FROM aditivosexcedentes');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching aditivosexcedentes:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idAditivoExcedente, descricao, quantidade, valor, idAditivo, idExcedente } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO aditivosexcedentes (idAditivoExcedente, descricao, quantidade, valor, idAditivo, idExcedente) VALUES (?, ?, ?, ?, ?, ?)',
             [idAditivoExcedente, descricao, quantidade, valor, idAditivo, idExcedente]
         );
@@ -35,8 +33,7 @@ router.put('/:idAditivoExcedente', async (req, res) => {
     const { descricao, quantidade, valor, idAditivo, idExcedente } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE aditivosexcedentes SET descricao = ?, quantidade = ?, valor = ?, idAditivo = ?, idExcedente = ? WHERE idAditivoExcedente = ?',
             [descricao, quantidade, valor, idAditivo, idExcedente, idAditivoExcedente]
         );
@@ -56,8 +53,7 @@ router.delete('/:idAditivoExcedente', async (req, res) => {
     const { idAditivoExcedente } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM aditivosexcedentes WHERE idAditivoExcedente = ?',
             [idAditivoExcedente]
         );

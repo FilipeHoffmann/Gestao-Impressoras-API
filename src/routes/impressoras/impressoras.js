@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM impressoras');
+        const [rows] = await db.query('SELECT * FROM impressoras');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching impressoras:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idImpressora, marcaModelo } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO impressoras (idImpressora, marcaModelo) VALUES (?, ?)',
             [idImpressora, marcaModelo]
         );
@@ -35,8 +33,7 @@ router.put('/:idImpressora', async (req, res) => {
     const { marcaModelo } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE impressoras SET marcaModelo = ? WHERE idImpressora = ?',
             [marcaModelo, idImpressora]
         );
@@ -56,8 +53,7 @@ router.delete('/:idImpressora', async (req, res) => {
     const { idImpressora } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM impressoras WHERE idImpressora = ?',
             [idImpressora]
         );

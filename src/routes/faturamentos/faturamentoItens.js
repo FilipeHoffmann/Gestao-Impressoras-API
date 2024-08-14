@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM faturamentoitens');
+        const [rows] = await db.query('SELECT * FROM faturamentoitens');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching faturamentoitens:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idFaturamentoItem, quantidade, valor, idFaturamento, idEmpenhoItem } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO faturamentoitens (idFaturamentoItem, quantidade, valor, idFaturamento, idEmpenhoItem) VALUES (?, ?, ?, ?, ?)',
             [idFaturamentoItem, quantidade, valor, idFaturamento, idEmpenhoItem]
         );
@@ -35,8 +33,7 @@ router.put('/:idFaturamentoItem', async (req, res) => {
     const { quantidade, valor, idFaturamento, idEmpenhoItem } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE faturamentoitens SET quantidade = ?, valor = ?, idFaturamento = ?, idEmpenhoItem = ? WHERE idFaturamentoItem = ?',
             [quantidade, valor, idFaturamento, idEmpenhoItem, idFaturamentoItem]
         );
@@ -56,8 +53,7 @@ router.delete('/:idFaturamentoItem', async (req, res) => {
     const { idFaturamentoItem } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM faturamentoitens WHERE idFaturamentoItem = ?',
             [idFaturamentoItem]
         );

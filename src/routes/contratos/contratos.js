@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute("SELECT `contratos`.`idContrato`, DATE_FORMAT(`contratos`.`dataInicial`, '%d-%m-%y') AS `dataInicial`, DATE_FORMAT(`contratos`.`dataFinal`, '%d-%m-%y') AS `dataFinal`, DATE_FORMAT(`contratos`.`dataFinalAtual`, '%d-%m-%y') AS `dataFinalAtual` FROM `gestaoimpressoras`.`contratos`;");
+        const [rows] = await db.query("SELECT `contratos`.`idContrato`, DATE_FORMAT(`contratos`.`dataInicial`, '%d-%m-%y') AS `dataInicial`, DATE_FORMAT(`contratos`.`dataFinal`, '%d-%m-%y') AS `dataFinal`, DATE_FORMAT(`contratos`.`dataFinalAtual`, '%d-%m-%y') AS `dataFinalAtual` FROM `gestaoimpressoras`.`contratos`;");
         res.json(rows);
     } catch (error) {
         console.error('Error fetching contratos:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idContrato, dataInicial, dataFinal, dataFinalAtual } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO contratos (idContrato, dataInicial, dataFinal, dataFinalAtual) VALUES (?, ?, ?, ?)',
             [idContrato, dataInicial, dataFinal, dataFinalAtual]
         );
@@ -35,8 +33,7 @@ router.put('/:idContrato', async (req, res) => {
     const { dataInicial, dataFinal, dataFinalAtual } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE contratos SET dataInicial = ?, dataFinal = ?, dataFinalAtual = ? WHERE idContrato = ?',
             [dataInicial, dataFinal, dataFinalAtual, idContrato]
         );
@@ -56,8 +53,7 @@ router.delete('/:idContrato', async (req, res) => {
     const { idContrato } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM contratos WHERE idContrato = ?',
             [idContrato]
         );

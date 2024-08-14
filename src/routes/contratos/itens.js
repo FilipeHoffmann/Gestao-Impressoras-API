@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM itens');
+        const [rows] = await db.query('SELECT * FROM itens');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching itens:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idItem, descricao, quantidade, saldo, valorAtual, idContrato, idProduto, idSecretaria } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO itens (idItem, descricao, quantidade, saldo, valorAtual, idContrato, idProduto, idSecretaria) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
             [idItem, descricao, quantidade, saldo, valorAtual, idContrato, idProduto, idSecretaria]
         );
@@ -35,8 +33,7 @@ router.put('/:idItem', async (req, res) => {
     const { descricao, quantidade, saldo, valorAtual, idContrato, idProduto, idSecretaria } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE itens SET descricao = ?, quantidade = ?, saldo = ?, valorAtual = ?, idContrato = ?, idProduto = ?, idSecretaria = ? WHERE idItem = ?',
             [descricao, quantidade, saldo, valorAtual, idContrato, idProduto, idSecretaria, idItem]
         );
@@ -56,8 +53,7 @@ router.delete('/:idItem', async (req, res) => {
     const { idItem } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM itens WHERE idItem = ?',
             [idItem]
         );

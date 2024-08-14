@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Database = require('../../database.js');
-const db = new Database();
+const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT * FROM empenhoexcedentes');
+        const [rows] = await db.query('SELECT * FROM empenhoexcedentes');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching empenhoexcedentes:', error.message);
@@ -16,9 +15,8 @@ router.get('/', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const connection = await db.getConnection();
         const { idEmpenhoExcedentes, quantidade, saldo, valor, idEmpenho, idExcedentes } = req.body;
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'INSERT INTO empenhoexcedentes (idEmpenhoExcedentes, quantidade, saldo, valor, idEmpenho, idExcedentes) VALUES (?, ?, ?, ?, ?, ?)',
             [idEmpenhoExcedentes, quantidade, saldo, valor, idEmpenho, idExcedentes]
         );
@@ -35,8 +33,7 @@ router.put('/:idEmpenhoExcedentes', async (req, res) => {
     const { quantidade, saldo, valor, idEmpenho, idExcedentes } = req.body;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'UPDATE empenhoexcedentes SET quantidade = ?, saldo = ?, valor = ?, idEmpenho = ?, idExcedentes = ? WHERE idEmpenhoExcedentes = ?',
             [quantidade, saldo, valor, idEmpenho, idExcedentes, idEmpenhoExcedentes]
         );
@@ -56,8 +53,7 @@ router.delete('/:idEmpenhoExcedentes', async (req, res) => {
     const { idEmpenhoExcedentes } = req.params;
 
     try {
-        const connection = await db.getConnection();
-        const [result] = await connection.execute(
+        const [result] = await db.query(
             'DELETE FROM empenhoexcedentes WHERE idEmpenhoExcedentes = ?',
             [idEmpenhoExcedentes]
         );
