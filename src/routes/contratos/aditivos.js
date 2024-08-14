@@ -5,7 +5,7 @@ const db = Database;
 
 router.get('/', async (req, res) => {
     try {
-        const [rows] = await db.query('SELECT * FROM aditivos');
+        const [rows] = await db.query('SELECT `aditivos`.`idAditivo`,`aditivos`.`descricao`,DATE_FORMAT(`aditivos`.`dataInicial`,`%d-%m-%y`) as `dataInicial`,DATE_FORMAT(`aditivos`.`dataFinal`,`%d-%m-%y`) as `dataFinal`,`aditivos`.`situacao`,`aditivos`.`idContrato` FROM `gestaoimpressoras`.`aditivos`;');
         res.json(rows);
     } catch (error) {
         console.error('Error fetching aditivos:', error.message);
