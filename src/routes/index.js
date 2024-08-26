@@ -65,7 +65,7 @@ router.use('/aditivosExcendentes', aditivosExcendentesRouter);
 router.use('/aditivosItens', aditivosItensRouter);
 router.use('/contratos', contratosRouter);
 router.use('/excedentes', excedentesRouter);
-router.use('/itensRouter', itensRouter);
+router.use('/itens', itensRouter);
 router.use('/produtos', produtosRouter);
 router.use('/secretarias', secretariasRouter);
 
