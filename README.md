@@ -56,3 +56,48 @@ Para utilizar a API Gestão de Impressoras, você pode enviar solicitações HTT
 └── README.md
 ```
 
+## Corpo de Requisições
+### Aditivos
+```
+{
+    "idAditivo": 1,
+    "descricao": "Teste",
+    "dataInicial": "15-08-25",
+    "dataFinal": "15-08-26",
+    "situacao": "ATIVO",
+    "idContrato": 2025
+}
+```
+### Excedentes Aditivos
+```
+{
+    "idAditivoExcedente": 1,
+    "descricao": "Teste",
+    "quantidade": 1,
+    "valor": 1.0,
+    "idAditivo": 1,
+    "idExcedente": 1
+}
+```
+
+### Itens Aditivos
+```
+{
+    "idAditivoExcedente": 1,
+    "descricao": "Teste",
+    "quantidade": 1,
+    "valor": 1.0,
+    "idAditivo": 1,
+    "idExcedente": 1
+}
+```
+
+### Contratos
+```
+{
+    "idContrato": 1
+    "dataInicial": "15-08-24"
+    "dataFinal": "15-08-25"
+    "dataFinalAtual": "15-08-26"
+}
+```
